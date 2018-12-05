@@ -1,3 +1,4 @@
+import string
 import operator
 
 remove_units_from_polymer = lambda p, i: p[:i] + p[i+2:]
@@ -19,7 +20,7 @@ def react_polymer(polymer):
 def main():
   polymer = open('input.txt', 'r').readline()
   
-  letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+  letters = list(string.ascii_lowercase)
   letters_to_poly_length = {}
   
   for l in letters:
