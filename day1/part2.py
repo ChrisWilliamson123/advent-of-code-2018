@@ -12,8 +12,5 @@ def main():
     results.append(current_freq)
     freq_index = freq_index + 1 if freq_index < len(frequencies) - 1 else 0
 
-    
-  
-
 if __name__ == '__main__':
   main()
