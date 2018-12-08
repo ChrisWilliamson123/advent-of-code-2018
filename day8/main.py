@@ -49,7 +49,6 @@ def calculate_value(head_node):
   head_node.value = value
 
 def main():
-  # 2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2
   numbers = list(map(int, open('input.txt', 'r').readline().split()))
   
   head_node = Node(numbers[0], numbers[1])
