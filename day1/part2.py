@@ -13,10 +13,10 @@ def main():
     if frequencies_reached[next_f]:
       found = True
       print(next_f)
-    else:
-      latest_f = next_f
-      frequencies_reached[next_f] = 1
-      f_index = f_index + 1 if f_index + 1 < len(frequencies) else 0
+      break   
+    latest_f = next_f
+    frequencies_reached[next_f] = 1
+    f_index = f_index + 1 if f_index + 1 < len(frequencies) else 0
 
 if __name__ == '__main__':
   main()
