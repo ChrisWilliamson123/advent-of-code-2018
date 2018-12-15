@@ -90,14 +90,13 @@ def main():
   for (guard_id, activity) in guard_activity.items():
     mcm = activity['minutes'].most_common(1)
     activity['mcm'] = mcm
-    print(mcm)
     if mcm == []:
       continue
     if mcm[0][1] > mcm_actual[1]:
       mcm_actual = mcm[0]
       g_id = guard_id
 
-  print(mcm_actual, g_id) 
+  print(mcm_actual[0] * g_id) 
   
 
 if __name__ == '__main__':
