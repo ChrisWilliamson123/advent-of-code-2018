@@ -14,18 +14,18 @@ def parse_instructions(input_lines):
     index += 4
   return instructions
 
+get_single_opcodes = lambda opcodes: {o: i for o, i in opcodes.items() if len(i) == 1}
+
 def reduce_opcodes(opcodes):
-    single_instruction_opcodes = {o: i for o, i in opcodes.items() if len(i) == 1}
+    single_instruction_opcodes = get_single_opcodes(opcodes)
     while len(single_instruction_opcodes) != len(opcodes):
         for o_1, i_1 in single_instruction_opcodes.items():
             for o_2, i_2 in opcodes.items():
                 if o_2 != o_1 and i_1[0] in i_2:
                     i_2.pop(i_2.index(i_1[0]))
-        single_instruction_opcodes = {o: i for o, i in opcodes.items() if len(i) == 1}
+        single_instruction_opcodes = get_single_opcodes(opcodes)
     return opcodes
     
-
-
 def main():
     whole_input = [l.rstrip() for l in open('input.txt', 'r').readlines()]
     samples = parse_instructions(whole_input)
