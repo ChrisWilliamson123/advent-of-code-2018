@@ -29,31 +29,31 @@ def print_area(collection_area, max_edge):
       to_print += collection_area[(x, y)]
     print(to_print)
 
+def perform_transformations(collection_area, max_edge):
+  new_collection_area = defaultdict(str)
+  for coord, content in collection_area.items():
+    adjacent_coords = get_adjacent_coords(coord, max_edge)
+    content_counts = get_contents_of_coords(adjacent_coords, collection_area)
+
+    if content == '.' and content_counts['|'] >= 3:
+      new_collection_area[coord] = '|'
+    elif content == '|' and content_counts['#'] >= 3:
+      new_collection_area[coord] = '#'
+    elif content == '#' and (content_counts['#'] < 1 or content_counts['|'] < 1):
+      new_collection_area[coord] = '.'
+    else:
+      new_collection_area[coord] = content
+
+  return new_collection_area
+
 def main():
   collection_area, max_edge = parse_input([l.rstrip() for l in open('input.txt', 'r').readlines()])
-  minutes = 1000000000
+  minutes = 10
   
   for m in range(minutes):
-    new_collection_area = defaultdict(str)
-    for coord, content in collection_area.items():
-      adjacent_coords = get_adjacent_coords(coord, max_edge)
-      content_counts = get_contents_of_coords(adjacent_coords, collection_area)
-      if content == '.' and content_counts['|'] >= 3:
-        new_collection_area[coord] = '|'
-      elif content == '|' and content_counts['#'] >= 3:
-        new_collection_area[coord] = '#'
-      elif content == '#':
-        if content_counts['#'] >= 1 and content_counts['|'] >= 1:
-          new_collection_area[coord] = content
-        else:
-          new_collection_area[coord] = '.'
-      else:
-        new_collection_area[coord] = content
-    collection_area = new_collection_area
+    collection_area = perform_transformations(collection_area, max_edge)
     counts = Counter(collection_area.values())
     print(m, counts['|'], counts['#'], counts['|'] * counts['#'])
-
-  
 
 if __name__ == '__main__':
   main()
