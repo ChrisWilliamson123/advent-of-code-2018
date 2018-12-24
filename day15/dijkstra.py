@@ -1,10 +1,71 @@
-import operator
+import itertools, operator
+from heapq import *
+
+REMOVED = '<removed-task>'
+
+class PriorityQueue:
+    def __init__(self):
+        self.pq = []
+        self.entry_finder = {}
+        self.counter = itertools.count()
+
+    def add_task(self, task, priority=0):
+        'Add a new task or update the priority of an existing task'
+        if task in self.entry_finder:
+            self.remove_task(task)
+        count = next(self.counter)
+        entry = [priority, count, task]
+        self.entry_finder[task] = entry
+        heappush(self.pq, entry)
+
+    def remove_task(self, task):
+        'Mark an existing task as REMOVED.  Raise KeyError if not found.'
+        entry = self.entry_finder.pop(task)
+        entry[-1] = REMOVED
+
+    def pop_task(self):
+        'Remove and return the lowest priority task. Raise KeyError if empty.'
+        while self.pq:
+            priority, count, task = heappop(self.pq)
+            if task is not REMOVED:
+                del self.entry_finder[task]
+                return task
+        raise KeyError('pop from an empty priority queue')
 
 def complete(destination_nodes, visited_nodes):
     for n in destination_nodes:
         if n not in visited_nodes:
             return False
     return True
+
+def dijkstra_p_queue(edges, nodes, origin, destination):
+    visited_nodes = set()
+    unvisited_nodes = nodes | {origin}
+    distances = {n: float('inf') for n in unvisited_nodes}
+    distances[origin] = 0
+    pri_queue = PriorityQueue()
+
+    # Build the queue
+    for n in unvisited_nodes:
+        pri_queue.add_task(n, distances[n])
+    
+    while len(pri_queue.pq) > 0:
+        # print(len(pri_queue.pq))
+        try:
+            u = pri_queue.pop_task()
+        except:
+            break
+        for neighbour in edges[u]:
+            v = neighbour[0]
+            length = neighbour[1]
+            alt = distances[u] + length
+            if alt < distances[v]:
+                distances[v] = alt
+                pri_queue.add_task(v, alt)
+        print('here')
+
+    return distances
+
 
 def dijkstra_multiple(edges, nodes, origin_node, destination_nodes):
     visited_nodes = set()

@@ -1,6 +1,6 @@
 import operator
 from collections import defaultdict
-from dijkstra import dijkstra_multiple
+from dijkstra import dijkstra_multiple, dijkstra_p_queue
 
 ELF_AP = 3
 GOBLIN_AP = 3
@@ -77,7 +77,9 @@ def move(current_pos, friendlies, enemies, nodes, edges):
     # For each coord I can move to, get shortest distance to ones I am aiming for
     distances_from_adj_coord_to_enemy = defaultdict(int)
     for adj_coord in adjacent_empty_coords:
-        distances_to_enemy_adjacents = dijkstra_multiple(edges, nodes, adj_coord, open_coords_around_enemies)
+        # distances_to_enemy_adjacents = dijkstra_multiple(edges, nodes, adj_coord, open_coords_around_enemies)
+        dij_p_q = dijkstra_p_queue(edges, nodes, adj_coord, (1, 1))
+        distances_to_enemy_adjacents = {coord: distance for coord, distance in dij_p_q.items() if coord in open_coords_around_enemies}
         minimum_distance_to_enemy_adjacent = min(distances_to_enemy_adjacents.values())
         distances_from_adj_coord_to_enemy[adj_coord] = minimum_distance_to_enemy_adjacent
 
